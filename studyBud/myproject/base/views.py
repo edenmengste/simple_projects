@@ -10,7 +10,8 @@ from .forms import RoomForm
 
 def home(request):
     rooms = Room.objects.all()
-    return render(request, "base/home.html", {"rooms": rooms})
+    topics = Topic.objects.all()
+    return render(request, "base/home.html", {"rooms": rooms, "topics": topics})
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
