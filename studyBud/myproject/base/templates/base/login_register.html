@@ -4,15 +4,15 @@
 
 <div> 
   <form method="POST" action="" >  
-  {% csrf token %}
+  {% csrf_token %}
 
   <label> Username: </label>
-  <input type="text" value="username" placeholder="Enter Username"/>
+  <input type="text" name="username" placeholder="Enter Username"/>
 
   <label> Password: </label>
-  <input type="text" value="password" placeholder="Enter password"/>
+  <input type="text" name="password" placeholder="Enter password"/>
 
-  <input type="submit" value="Login"/>
+  <input type="submit" name="Login"/>
   </form>
 </div>
 
