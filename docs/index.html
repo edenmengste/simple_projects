@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickQuiz - Test Your Knowledge</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Particle Background -->
+  <div id="particles-js" class="particle-bg"></div>
+
+  <!-- Navigation -->
+  <nav class="py-4 px-6 sticky top-0 z-10" role="navigation">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-inter-bold text-[#0B132B]">
+        <span class="logo-emoji">🧠</span>QuickQuiz
+      </h1>
+      <div class="space-x-4">
+        <a href="#home" class="nav-btn nav-link">Home</a>
+        <a href="#register" class="nav-btn nav-link">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="max-w-7xl mx-auto py-16 px-6 text-center section-transition">
+    <h1 class="text-5xl sm:text-6xl font-inter-bold hero-highlight mb-6">QuickQuiz: Spark Your Curiosity!</h1>
+    <p class="text-xl sm:text-2xl font-inter-medium text-[#0B132B] mb-8 max-w-2xl mx-auto">Dive into fun, interactive quizzes to test your knowledge and learn something new today.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <select id="niche" class="bg-[#E8ECEF] border border-[#6B7280] p-3 rounded-lg text-[#0B132B] font-inter-regular text-base" aria-label="Select quiz category">
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="javascript">JavaScript</option>
+      </select>
+      <select id="question-count" class="bg-[#E8ECEF] border border-[#6B7280] p-3 rounded-lg text-[#0B132B] font-inter-regular text-base" aria-label="Select number of questions">
+        <option value="3">3 Questions</option>
+        <option value="5">5 Questions</option>
+        <option value="10">10 Questions</option>
+      </select>
+      <button onclick="startQuiz()" class="primary-btn bg-[#7C4DFF] text-[#E8ECEF] font-inter-bold text-lg py-3 px-8 rounded-lg relative hover:bg-[#FF2E63] transition-colors duration-300" aria-label="Start Quiz">Start Now</button>
+    </div>
+    <div class="mt-8">
+      <p class="text-base font-inter-regular text-[#6B7280]">Explore topics like HTML, CSS, and JavaScript to challenge yourself!</p>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section id="quiz" class="max-w-3xl mx-auto py-12 px-6 hidden section-transition">
+    <div class="code-snippet mb-6 text-sm font-space-mono">
+      // Ready to test your knowledge? Let's go!
+    </div>
+    <div class="progress-bar mb-4">
+      <div id="progress-fill" class="progress-fill w-0"></div>
+    </div>
+    <div class="card bg-[#1C2526] border border-[#6B7280] p-6 rounded-lg">
+      <h2 id="question" class="text-xl font-inter-bold mb-4"></h2>
+      <div id="options" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+    <button onclick="nextQuestion()" class="primary-btn bg-[#7C4DFF] text-[#E8ECEF] font-inter-bold text-lg py-3 px-6 rounded-lg mt-6 relative hover:bg-[#FF2E63] transition-colors duration-300" aria-label="Next Question">Next</button>
+  </section>
+
+  <!-- Sign-In/Sign-Up Section -->
+  <section id="register" class="max-w-md mx-auto py-16 px-6 hidden section-transition">
+    <h2 class="text-3xl font-inter-bold text-[#0B132B] mb-6 text-center">Join QuickQuiz</h2>
+    <div class="bg-[#E8ECEF] border border-[#6B7280] rounded-lg p-6">
+      <div class="flex justify-center gap-4 mb-6">
+        <button id="signin-tab" class="tab bg-[#E8ECEF] text-[#0B132B] font-inter-medium text-base py-2 px-4 rounded-lg active" onclick="showForm('signin')">Sign In</button>
+        <button id="signup-tab" class="tab bg-[#E8ECEF] text-[#0B132B] font-inter-medium text-base py-2 px-4 rounded-lg" onclick="showForm('signup')">Sign Up</button>
+      </div>
+      <form id="signin-form" class="flex flex-col gap-4">
+        <div>
+          <label for="signin-email" class="block text-sm font-inter-medium text-[#0B132B] mb-1">Email</label>
+          <input id="signin-email" type="email" class="form-input" placeholder="Enter your email" required aria-label="Email for sign in">
+        </div>
+        <div>
+          <label for="signin-password" class="block text-sm font-inter-medium text-[#0B132B] mb-1">Password</label>
+          <input id="signin-password" type="password" class="form-input" placeholder="Enter your password" required aria-label="Password for sign in">
+        </div>
+        <button type="submit" class="primary-btn bg-[#7C4DFF] text-[#E8ECEF] font-inter-bold text-lg py-3 px-6 rounded-lg hover:bg-[#FF2E63] transition-colors duration-300" aria-label="Sign In">Sign In</button>
+      </form>
+      <form id="signup-form" class="flex flex-col gap-4 hidden">
+        <div>
+          <label for="signup-username" class="block text-sm font-inter-medium text-[#0B132B] mb-1">Username</label>
+          <input id="signup-username" type="text" class="form-input" placeholder="Choose a username" required aria-label="Username for sign up">
+        </div>
+        <div>
+          <label for="signup-email" class="block text-sm font-inter-medium text-[#0B132B] mb-1">Email</label>
+          <input id="signup-email" type="email" class="form-input" placeholder="Enter your email" required aria-label="Email for sign up">
+        </div>
+        <div>
+          <label for="signup-password" class="block text-sm font-inter-medium text-[#0B132B] mb-1">Password</label>
+          <input id="signup-password" type="password" class="form-input" placeholder="Create a password" required aria-label="Password for sign up">
+        </div>
+        <button type="submit" class="primary-btn bg-[#7C4DFF] text-[#E8ECEF] font-inter-bold text-lg py-3 px-6 rounded-lg hover:bg-[#FF2E63] transition-colors duration-300" aria-label="Sign Up">Sign Up</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Results Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden modal">
+    <div class="modal-content max-w-md relative">
+      <button onclick="closeModal()" class="text-[#FF2E63] text-2xl font-bold absolute top-2 right-4 hover:scale-110" aria-label="Close Modal">×</button>
+      <h2 class="text-2xl font-inter-bold text-[#0B132B] mb-4">Your Results</h2>
+      <p id="result-text" class="result-text text-base font-inter-regular mb-4"></p>
+      <div class="flex gap-4 justify-center">
+        <button onclick="showIncorrectAnswers()" class="primary-btn bg-transparent border-2 border-[#00F5D4] text-[#00F5D4] font-inter-bold text-lg py-3 px-6 rounded-lg hover:bg-[#00F5D4] hover:text-[#0B132B] transition-colors duration-300" aria-label="Review Incorrect Answers">Review Incorrect Answers</button>
+        <button onclick="closeModal()" class="primary-btn bg-transparent border-2 border-[#00F5D4] text-[#00F5D4] font-inter-bold text-lg py-3 px-6 rounded-lg hover:bg-[#00F5D4] hover:text-[#0B132B] transition-colors duration-300" aria-label="Return Home">Return Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Incorrect Answers Modal -->
+  <div id="incorrect-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden modal">
+    <div class="modal-content max-w-md relative">
+      <canvas id="confetti-canvas"></canvas>
+      <button onclick="closeIncorrectModal()" class="text-[#FF2E63] text-2xl font-bold absolute top-2 right-4 hover:scale-110" aria-label="Close Incorrect Answers Modal">×</button>
+      <h2 class="text-2xl font-inter-bold text-[#0B132B] mb-4">Incorrect Answers</h2>
+      <div id="incorrect-answers" class="incorrect-answers"></div>
+      <div class="flex gap-4 justify-center mt-4">
+        <button onclick="closeIncorrectModal()" class="primary-btn bg-transparent border-2 border-[#00F5D4] text-[#00F5D4] font-inter-bold text-lg py-3 px-6 rounded-lg hover:bg-[#00F5D4] hover:text-[#0B132B] transition-colors duration-300" aria-label="Close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-[#6B7280] text-[#E8ECEF] py-6 px-6 mt-auto">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-base font-inter-regular">© 2025 QuickQuiz. Discover, learn, and grow!</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
