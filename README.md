@@ -38,13 +38,22 @@ A full-stack study group chat application with user authentication and real-time
 
 ## 🚀 Quick Deploy
 
-### QuickQuiz (GitHub Pages)
+### Interactive Deployment
+```bash
+./deploy.sh
+```
+
+### Individual Projects
+
+**QuickQuiz (GitHub Pages):**
 ```bash
 ./deploy-quickquiz.sh
 ```
 
-### StudyBud (Server Required)
-See `DEPLOYMENT.md` for server deployment options.
+**StudyBud (Server Preparation):**
+```bash
+./prepare-studybud.sh
+```
 
 ---
 
