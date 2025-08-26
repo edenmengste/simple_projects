@@ -13,7 +13,7 @@
   <label> Password: </label>
   <input type="text" name="password" placeholder="Enter password"/>
 
-  <input type="submit" name="Login"/>
+  <input type="submit" value="Login"/>
   </form>
   <p>Haven't signed up yet? </p>
   <a href="{% url 'register'%}"> Register </a>
@@ -22,14 +22,8 @@
 <div> 
   <form method="POST" action="" >  
   {% csrf_token %}
-
-  <label> Username: </label>
-  <input type="text" name="username" placeholder="Enter Username"/>
-
-  <label> Password: </label>
-  <input type="text" name="password" placeholder="Enter password"/>
-
-  <input type="submit" name="Register"/>
+{{form.as_p}}
+  <input type="submit" value="Register"/>
   </form>
   <p>Already signed up? </p>
   <a href="{% url 'login'%}"> Login </a>

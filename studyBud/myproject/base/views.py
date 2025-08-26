@@ -20,7 +20,7 @@ def loginPage(request):
     if request.user.is_authenticated:
         return redirect("home")
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         password = request.POST.get("password")
 
         try:
@@ -44,7 +44,18 @@ def logoutUser(request):
     return redirect("home")
 
 def registerPage(request):
-    form= UserCreationForm()
+    form = UserCreationForm()
+    if request.method == "POST" :
+       form= UserCreationForm(request.POST)
+       if form.is_valid():
+           user = form.save(commit = False)
+           user.username = user.username.lower()
+           user.save()
+           login(request, user)
+           return redirect("home")
+       else:
+            messages.error(request, "An error occured during registration")  
+
     return render(request, "base/login_register.html", {"form": form})
 
 def home(request):
@@ -60,7 +71,8 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    return render(request , "base/room.html", {"room": room})
+    room_messages = room.message_set.all()
+    return render(request , "base/room.html", {"room": room, "room_messages": room_messages})
 
 @login_required(login_url="login")
 def createRoom(request):
