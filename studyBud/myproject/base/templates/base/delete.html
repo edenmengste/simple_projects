@@ -5,7 +5,7 @@
 <form method="POST" action="">
     {% csrf_token %}
     <p>Are you sure you want to delete "{{obj}}"?</p>
-    <a href="{{ back_url|default:'/' }}">Go Back</a>
+    <a href="#" onclick="history.back()">Go Back</a>
     <input type="submit" value="Confirm"/>
 
 </form>    
