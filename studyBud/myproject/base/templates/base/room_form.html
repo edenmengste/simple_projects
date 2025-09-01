@@ -23,13 +23,13 @@
              {% csrf_token %}
            
             <div class="form__group">
-              <label for="room_name">Room Name</label>
-              <input required type="text" name="topic" list="topic-list" />
+              <label for="room_name">Enter a Topic</label>
+              <input required type="text" value="{{room.topic.name}}" name="topic" list="topic-list" />
               <datalist id="topic-list">
                 <select id="room-topic">
                   {% for topic in topics %}
-                  <option value="Python">Python</option>
-                  {%endfor%}
+                  <option value="{{topic.name}}">{{topic.name}}</option>
+                  {% endfor %}
                 </select>
               </datalist>
             </div>
@@ -39,7 +39,7 @@
             </div>
           
              <div class="form__group">
-              <label for="room_name">Room Description/label>
+              <label for="room_name"> Room Description </label>
               {{form.name}}
               <!-- <input id="room_name" name="room_name" type="text" placeholder="E.g. Mastering Python + Django" /> -->
             </div>
