@@ -132,9 +132,9 @@ def updateRoom(request, pk):
        topic, created = Topic.objects.get_or_create(name=topic_name)
        form = RoomForm(request.POST, instance=room) 
        room.name = request.POST.get("name")
-       room.topic = request.POST.get("topic")
+       room.topic = topic
        room.description = request.POST.get("description")
-
+       room.save()
        return redirect("home")
 
     context = {"form": form, "topics":topics, "room": room}
@@ -163,3 +163,9 @@ def deleteMessage(request, pk):
         message.delete()
         return redirect("home")
     return render(request, "base/delete.html", {"obj":message})    
+
+@login_required(login_url="login")
+def updateUser(request):
+    context= {}
+    return render(request, "base/update-user.html", context)
+
