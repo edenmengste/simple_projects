@@ -1,14 +1,14 @@
 {% for room in rooms %}
    <div class="roomListRoom">
             <div class="roomListRoom__header">
-              <a href="{% url 'profile' room.host.id% }" class="roomListRoom__author">
+              <a href="{% url 'profile' room.host.id %}" class="roomListRoom__author">
                 <div class="avatar avatar--small">
                   <img src="https://randomuser.me/api/portraits/women/11.jpg" />
                 </div>
-                <span> <a href="{% url 'profile' room.host.id %}">@{{room.host.username}}</a></span>
+                <span class="roomListRoom__username">@{{ room.host.username }}</span>
               </a>
               <div class="roomListRoom__actions">
-                <span>{{room.created|timesince}}</span>
+                 <span>{{room.created|timesince}}</span>
               </div>
             </div>
             <div class="roomListRoom__content">
@@ -38,6 +38,5 @@
             </div>
           </div>
  {% endfor %}
-   
-     
-        
+
+
