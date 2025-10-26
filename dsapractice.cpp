@@ -138,3 +138,43 @@ void backward(student *p){
         p=p->next;
     }
 }
+
+void printReverse(student *node) { //call it with printReverse(start)
+    if (node == NULL) return;         
+    printReverse(node->next);         
+    cout << node->name << endl;       
+}
+
+void delBeg(){
+    if(start ==NULL) cout<<"List is empty";
+    student *temp= start;
+    start = temp->next;
+    delete temp;
+}
+
+void delend(){
+    if(start=NULL) cout<<"Empty list";
+    student *q=start;
+    while(q->next->next!=NULL){
+        q=q->next;
+    }
+    student *temp = q->next;
+    q->next=NULL;
+    delete temp;
+}
+
+void delparticular(int c){
+    if(start==NULL) cout<<"Empty list";
+    student *q=start;
+    for(int i=1;i<c;i++){
+       if(q == NULL || q->next == NULL) {
+        cout<<"No sufficient node";
+        return;
+       }
+       q=q->next;
+    }
+    student *temp=q->next;
+    q->next=temp->next;
+    delete temp;   
+
+}
