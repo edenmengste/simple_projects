@@ -1,96 +1,25 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
-
-template <typename T>
-
-class Some{
-private:
-   int maxSize;
-   int listSize;
-   int curr;
-   T* listArray;
-public:
-   Some(int max=50){
-    maxSize = max;
-    listSize = curr = 0;
-    listArray = new T[maxSize];
-   }
-
-   ~Some(){
-      delete [] listArray;
-   }
-
-   void clear(){
-    delete[] listArray;
-    listSize = curr = 0;
-    listArray = new T[maxSize];
-   }
-
-   bool setPos(int pos){
-    if(pos>=0 && listSize >= pos){
-        curr = pos;
-        return true;
-    }
-    return false;
-   }
-
-   bool getValue(T& it){
-    if(listSize == 0 || curr<0 || curr>= listSize){
-        return false;
-    }
-    it = listArray[curr];
-    return true;
-   }
-
-   bool insert(T x){
-    if(listSize==maxSize) return false;
-    //shifting elements up
-    for(int i=listSize; i>curr; i--){
-        listArray[i] = listArray[i-1];
-    }
-    listArray[curr] = x;
-    listSize++;
-    return true;
-   }
-
-   bool append(int n){
-    if (listSize == maxSize) return false;
-    listArray[listSize++] = n;
-    return true;
-   }
-
-   bool remove(){
-    if(listSize == 0) return false;
-    for(int i=curr; i<listSize-1;i++){
-        listArray[i] = listArray[i+1];
-   }
-    listSize--;
-        return true;
-}
-
-};
 
 struct student{
     char name[20];
     int age;
-    char dept[20];
     struct student *next;
+    struct student *previous;
 };
 
 struct student *start = NULL;
-struct student *p = new student;
 
 void insert_begin(student *p){
-    student *temp;
     if(start==NULL){
         start=p; 
         p->next=NULL;
-        cout<<"Inserted at the beginning";
     }
     else{
-        temp=start;
+        p->next=start;
         start=p;
-        p->next = temp;
+        cout<<"Inserted at the beginning";
     }
 }
 
@@ -103,6 +32,7 @@ void insert_end(student *p){
         }
         q->next=p;
     }
+    cout << "Inserted at the end.\n";
 }
 
 void insert_mid(int c, student *p){
@@ -110,7 +40,10 @@ void insert_mid(int c, student *p){
     for(int i=1; i<c; i++){
         q=q->next;
     }
-    if(q=NULL) cout<<"Less number of nodes than "<<c;
+    if(q==NULL){ 
+        cout<<"Less number of nodes than "<<c<<".\n";
+        return;
+    }
     else{
         p->next = q->next;
         q->next=p;
@@ -120,22 +53,11 @@ void insert_mid(int c, student *p){
 }
 
 void display(student *p){
-    student *q = start;
-    do{
-        if(q==NULL) cout<<"End of list";
-        cout<<p->name<<endl;
-    cout<<p->age<<endl;
-    q=q->next;
-    }
-    while(q->next!=NULL);
-}
-
-void backward(student *p){
-    student *q=start;
-    while(q->next!=NULL){
-            q =q->next; }
-    while(p->next!=q){
-        p=p->next;
+    int pos = 1;
+    while (p != NULL) {
+        cout << pos << ". Name: " << p->name << ", Age: " << p->age << endl;
+        p = p->next;
+        pos++;
     }
 }
 
@@ -153,7 +75,7 @@ void delBeg(){
 }
 
 void delend(){
-    if(start=NULL) cout<<"Empty list";
+    if(start==NULL) cout<<"Empty list";
     student *q=start;
     while(q->next->next!=NULL){
         q=q->next;
@@ -177,4 +99,117 @@ void delparticular(int c){
     q->next=temp->next;
     delete temp;   
 
+}
+
+int main(){
+    int main_choice, insert_choice, position;
+    student s;
+    do{
+        cout << "\n   Main Menu \n";
+        cout << "1. Add students\n";
+        cout << "2. Insert student\n";
+        cout << "3. Delete student\n";
+        cout << "4. Display student\n";
+        cout << "0. Exit\n";
+        cout << "Enter a choice: ";
+        cin >> main_choice;
+
+        switch(main_choice){
+            case 1: {
+                cout<<"Enter students name: ";
+                cin>>s.name;
+                cout<<"Enter their age: ";
+                cin>>s.age;
+
+                // create node and insert into list
+                student *p = new student;
+                std::strcpy(p->name, s.name);
+                p->age = s.age;
+                p->next = NULL;
+                insert_end(p);
+
+                cout<<"Registered successfully\n";
+                break;
+            }
+            case 2:{
+            cout<<"Enter the student info you want to insert-> Name: ";
+            cin>>s.name;
+            cout<<"Age: ";
+            cin>>s.age;
+
+            student *p = new student;
+            std::strcpy(p->name, s.name);
+            p->age=s.age;
+
+            cout<<"1.Insert at the beginning"<<endl;
+            cout<<"2.Insert at the middle"<<endl;
+            cout<<"3.Insert at the end"<<endl;
+            cout<<"0.exit"<<endl;
+            cout<<"Enter choice: ";
+            cin>>insert_choice;
+
+            switch (insert_choice)
+            {
+            case 1:
+                insert_begin(p);
+                break;
+            case 2:
+                cout<<"Where do you want to insert? ";
+                cin>>position;
+                insert_mid(position,p);
+                break;                
+            case 3:
+                insert_end(p);
+                break;             
+            default:
+                break;
+            }
+            break;
+          }
+            case 3:{
+            cout<<"1.Delete the beginning"<<endl;
+            cout<<"2.Delete at the middle"<<endl;
+            cout<<"3.Delete the end"<<endl;
+            cout<<"0.exit"<<endl;
+            cout<<"Enter choice: ";
+            cin>>insert_choice;
+
+            switch (insert_choice)
+            {
+            case 1:
+                delBeg();
+                break;
+            case 2:
+                cout<<"Where do you want to delete? ";
+                cin>>position;
+                delparticular(position);
+                break;                
+            case 3:
+                delend();
+                break;             
+            default:
+                break;
+            }
+            break;
+            }
+            case 4:{
+            cout<<"1.Display forward"<<endl;
+            cout<<"2.Display backward"<<endl;
+            cout<<"0.Exit"<<endl;
+            cin>>insert_choice;
+            switch(insert_choice){
+                case 1:
+                   display(start);
+                   break;
+                case 2: 
+                   printReverse(start);
+                   break;
+                default:
+                   break;
+            }
+        }
+    }
+    while(main_choice!=0);
+}
+   return 0;
 }
