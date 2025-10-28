@@ -6,57 +6,47 @@ struct student {
     char name[20];
     int age;
     student *next;
-    student *previous;
 };
 
 student *start = NULL;
 
 // Insert at beginning
 void insert_begin(student *p) {
-    if (start == NULL) {
-        start = p;
-        p->next = NULL;
-        p->previous = NULL;
-    } else {
-        p->next = start;
-        p->previous = NULL;
-        start->previous = p;
-        start = p;
-    }
+    if (!p) return;
+    p->next = start;
+    start = p;
     cout << "Inserted at the beginning.\n";
 }
 
 // Insert at end
 void insert_end(student *p) {
-    p->next = NULL;
     if (start == NULL) {
-        p->previous = NULL;
         start = p;
     } else {
         student *q = start;
         while (q->next != NULL)
             q = q->next;
         q->next = p;
-        p->previous = q;
-    }
     cout << "Inserted at the end.\n";
 }
+}
 
-// Insert at middle (after position c)
 void insert_mid(int c, student *p) {
+    if (c <= 0 || start == NULL) {
+        insert_begin(p);
+        return;
+    }
+
     student *q = start;
     for (int i = 1; i < c && q != NULL; i++)
         q = q->next;
 
     if (q == NULL) {
         cout << "Less number of nodes than " << c << ".\n";
+        delete p;
         return;
     }
-
     p->next = q->next;
-    p->previous = q;
-    if (q->next != NULL)
-        q->next->previous = p;
     q->next = p;
 
     cout << "Inserted successfully after position " << c << ".\n";
@@ -66,6 +56,10 @@ void insert_mid(int c, student *p) {
 void display() {
     student *q = start;
     int pos = 1;
+    if (q == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
     while (q != NULL) {
         cout << pos << ". Name: " << q->name << ", Age: " << q->age << endl;
         q = q->next;
@@ -73,22 +67,29 @@ void display() {
     }
 }
 
-// Display backward
+
 void displayBackward() {
-    student *q = start;
-    if (q == NULL) {
-        cout << "List is empty.\n";
+    if (start == nullptr) {
+        cout << "The list is empty\n";
         return;
     }
 
-    while (q->next != NULL)
-        q = q->next;
+    student *current = start;
+    while (current->next != nullptr)
+        current = current->next;
 
-    int pos = 1;
-    while (q != NULL) {
-        cout << pos << ". Name: " << q->name << ", Age: " << q->age << endl;
-        q = q->previous;
-        pos++;
+    cout << "\n-- Students List (Backward) --\n";
+    while (true) {
+        cout << "Name: " << s.name<< ", ID: " << s.id;
+
+        if (current == start)
+            break;
+1
+        student *prev = start;
+        while (prev->next != current)
+            prev = prev->next;
+
+        current = prev;
     }
 }
 
@@ -100,8 +101,6 @@ void delBeg() {
     }
     student *temp = start;
     start = start->next;
-    if (start != NULL)
-        start->previous = NULL;
     delete temp;
     cout << "First node deleted.\n";
 }
@@ -127,13 +126,12 @@ void delend() {
     cout << "Last node deleted.\n";
 }
 
-// Delete a particular node at position c
 void delparticular(int c) {
     if (start == NULL) {
         cout << "Empty list.\n";
         return;
     }
-    if (c == 1) {
+    if (c <= 1) {
         delBeg();
         return;
     }
@@ -149,22 +147,46 @@ void delparticular(int c) {
 
     student *temp = q->next;
     q->next = temp->next;
-    if (temp->next != NULL)
-        temp->next->previous = q;
     delete temp;
     cout << "Node at position " << c << " deleted.\n";
 }
 
+// Simple searchcase-sensitive)
+void searchByName() {
+    if (start == NULL) {
+        cout << "List is empty.\n";
+        return;
+    }
+    char query[100];
+    cout << "Enter name or substring to search: ";
+    cin >> ws;
+    cin.getline(query, sizeof(query));
+
+    student *q = start;
+    int pos = 1;
+    bool found = false;
+    while (q != NULL) {
+        if (strstr(q->name, query) != NULL) { // partial match
+            cout << pos << ". Name: " << q->name << ", Age: " << q->age << endl;
+            found = true;
+        }
+        q = q->next;
+        pos++;
+    }
+    if (!found) cout << "No student matching \"" << query << "\" found.\n";
+}
+
 int main() {
-    int main_choice, insert_choice, position;
+    int main_choice , insert_choice, position;
     student s;
 
     do {
-        cout << "\nMain Menu\n";
+        cout << "Main Menu\n";
         cout << "1. Add student\n";
         cout << "2. Insert student\n";
         cout << "3. Delete student\n";
         cout << "4. Display students\n";
+        cout << "5. Search student\n";
         cout << "0. Exit\n";
         cout << "Enter a choice: ";
         cin >> main_choice;
@@ -172,25 +194,35 @@ int main() {
         switch (main_choice) {
             case 1: {
                 cout << "Enter student's name: ";
-                cin >> s.name;
+                cin >> ws;
+                cin.getline(s.name, sizeof(s.name));
                 cout << "Enter age: ";
                 cin >> s.age;
+
+                student *p = new student;
+                strcpy(p->name, s.name);
+                p->age = s.age;
+                p->next = NULL;
+                insert_end(p);
+
                 cout << "Registered successfully.\n";
                 break;
             }
 
             case 2: {
                 cout << "Enter student info to insert → Name: ";
-                cin >> s.name;
+                cin >> ws;
+                cin.getline(s.name, sizeof(s.name));
                 cout << "Age: ";
                 cin >> s.age;
 
                 student *p = new student;
                 strcpy(p->name, s.name);
                 p->age = s.age;
+                p->next = NULL;
 
                 cout << "1. Insert at beginning\n";
-                cout << "2. Insert at middle\n";
+                cout << "2. Insert at middle (after position)\n";
                 cout << "3. Insert at end\n";
                 cout << "0. Exit\n";
                 cout << "Enter choice: ";
@@ -204,7 +236,7 @@ int main() {
                         insert_mid(position, p);
                         break;
                     case 3: insert_end(p); break;
-                    default: break;
+                    default: delete p; break;
                 }
                 break;
             }
@@ -234,11 +266,20 @@ int main() {
                 cout << "1. Display forward\n";
                 cout << "2. Display backward\n";
                 cout << "0. Exit\n";
+                cout << "Enter choice: ";
                 cin >> insert_choice;
                 if (insert_choice == 1) display();
-                else if (insert_choice == 2) displayBackward();
+                else if (insert_choice == 2) printReverse(start);
                 break;
             }
+
+            case 5: {
+                searchByName();
+                break;
+            }
+
+            default:
+                break;
         }
     } while (main_choice != 0);
 
